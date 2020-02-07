@@ -27,21 +27,35 @@ const kittyPrompts = {
 
     // Return an array of just the names of kitties who are orange e.g.
     // ['Tiger', 'Snickers']
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+
+    const result = kitties.reduce((acc, kitty) => {
+      if (kitty.color === 'orange') {
+        acc.push(kitty.name);
+      }
+      return acc;
+    },[]);
+
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Since we are returning a value that is not the entire
+    // object, but an array of the names of kitties that are
+    // orange, we can use a reducer function to test if the
+    // kitty is orange. If so we push it to the array that is
+    // set as the initial value.
   },
 
   sortByAge() {
     // Sort the kitties by their age
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = kitties.sort((a, b) => b.age - a.age);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Since the test is looking for kitties sorted by age
+    // in descending order. we can take b.age - a.age.
+    // In order to get results in ascending order, the body
+    // of the function would be `a.age - b.age`;
   },
 
   growUp() {
@@ -58,7 +72,8 @@ const kittyPrompts = {
     // },
     // ...etc]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    kitties.forEach(kitty => kitty.age += 2);
+    const result = kitties;
     return result;
   }
 };
@@ -90,11 +105,42 @@ const clubPrompts = {
     //   ...etc
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    // Loop through each object.
+    // Create an empty array if name doesn't exist as key
+    // If it does, just add the club name to array(value)
+
+    // const result = clubs.reduce((acc, club) => {
+    //
+    //   club.members.forEach(member => {
+    //     if (!acc[member]) {
+    //       acc[member] = [];
+    //     }
+    //     acc[member].push(club.club);
+    //   });
+    //
+    //   return acc;
+    // }, {});
+
+    const result = clubs.reduce((acc, club) => {
+      club.members.forEach(member => {
+        if (!acc[member]) {
+          acc[member] = [];
+        }
+        acc[member].push(club.club);
+
+      });
+
+      return acc;
+    }, {});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Since our return should be an object, we can use
+    // reduce. Within each loop of club objects, we then
+    // create a forEach loop on each member to create those
+    // key values with an empty array if it does not already
+    // exist. Then within our reduce iterator, we push the
+    // the club name into the array.
   }
 };
 
@@ -126,11 +172,19 @@ const modPrompts = {
     //   { mod: 4, studentsPerInstructor: 8 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = mods.reduce((acc, modInfo) => {
+      let newMod = {};
+      newMod.mod = modInfo.mod;
+      newMod.studentsPerInstructor = (modInfo.students / modInfo.instructors);
+      acc.push(newMod);
+      return acc;
+    }, []);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Foreach object create a new object containing
+    // an object with keys of mod Number and students per
+    // instructor.
   }
 };
 
@@ -161,11 +215,21 @@ const cakePrompts = {
     //    ..etc
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((acc, cakeInfo) => {
+      let newCake = {};
+      newCake.flavor = cakeInfo.cakeFlavor;
+      newCake.inStock = cakeInfo.inStock;
+
+      acc.push(newCake);
+      return acc;
+    }, []);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Since we need a new array of objects with different
+    // values, we can use reduce. We define a new object
+    // that takes in the new properties and values, is
+    // then pushed into our return array.
   },
 
   onlyInStock() {
@@ -189,22 +253,28 @@ const cakePrompts = {
     // ..etc
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.filter(cake => cake.inStock > 0);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We can just filter through the cakes to find which
+    // ones have an inStock value greater than 0.
   },
 
   totalInventory() {
     // Return the total amount of cakes in stock e.g.
     // 59
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((acc, cake) => {
+      acc += cake.inStock;
+
+      return acc;
+    },0);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // we can use reduce to create an intial value of 0 and
+    // add the inStock value of each cake.
   },
 
   allToppings() {
@@ -212,11 +282,22 @@ const cakePrompts = {
     // every cake in the dataset e.g.
     // ['dutch process cocoa', 'toasted sugar', 'smoked sea salt', 'berries', ..etc]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((acc, cake) => {
+      cake.toppings.forEach(topping => {
+        if (!acc.includes(topping)) {
+          acc.push(topping);
+        }
+      });
+
+      return acc;
+    },[]);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // To return a new array of all toppings, we can use
+    // reduce. Within each reducer iteration, we do a
+    // for loop to add the topping if it does not already
+    // exist in the reducer returned array.
   },
 
   groceryList() {
@@ -230,11 +311,22 @@ const cakePrompts = {
     //    ...etc
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((acc, cake) => {
+      cake.toppings.forEach(topping => {
+        if (!acc[topping]) {
+          acc[topping] = 0;
+        }
+        acc[topping] += 1;
+      });
+
+      return acc;
+    }, {});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We can use reduce to return a new object where each
+    // topping becomes a key value if it does not already.
+    // Then we add 1 to each instance of the topping.
   }
 };
 
@@ -265,11 +357,14 @@ const classPrompts = {
     //   { roomLetter: 'G', program: 'FE', capacity: 29 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = classrooms.filter(room => {
+      return room.program === 'FE';
+    });
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We can use filter to return an array of only
+    // classrooms in the 'FE' program.
   },
 
   totalCapacities() {
@@ -280,21 +375,32 @@ const classPrompts = {
     //   beCapacity: 96
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = classrooms.reduce((acc, room) => {
+      if (room.program === 'FE') {
+        acc.feCapacity += room.capacity;
+      } else {
+        acc.beCapacity += room.capacity;
+      }
+
+      return acc;
+    }, { 'feCapacity': 0, 'beCapacity': 0 });
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We can use reduce to return a new array with the
+    // 'feCapacity' and 'beCapacity' keys. As we iterate
+    // through each classroom, we can add the capacity
+    // to the correct key/value pair.
   },
 
   sortByCapacity() {
     // Return the array of classrooms sorted by their capacity (least capacity to greatest)
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = classrooms.sort((a, b) => a.capacity -b.capacity);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We can use .sort() to sort the classrooms by capacity.
   }
 };
 
@@ -317,11 +423,18 @@ const bookPrompts = {
     //   'Catch-22', 'Treasure Island']
 
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = books.reduce((acc, book) => {
+      if ((book.genre !== 'Horror') && (book.genre !== 'True Crime')) {
+        acc.push(book.title);
+      }
+
+      return acc;
+    },[]);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We can use reduce to return a new array of just books,
+    // as long as their genre is not 'Horror' or 'True Crime'.
 
   },
   getNewBooks() {
@@ -332,11 +445,22 @@ const bookPrompts = {
     //  { title: 'Life of Pi', year: 2001 },
     //  { title: 'The Curious Incident of the Dog in the Night-Time', year: 2003 }]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = books.reduce((acc, book) => {
+      if ((book.published >= 1990) && (book.published <= 2009)) {
+        let bookInRange = {};
+        bookInRange.title = book.title;
+        bookInRange.year = book.published;
+        acc.push(bookInRange);
+      }
+
+      return acc;
+    },[]);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We can use .reduce() to return an array containing objects
+    // with title and year properties that are between the year
+    // 1989 and 2011
   }
 
 };
@@ -355,11 +479,16 @@ const weatherPrompts = {
     // return an array of all the average temperatures. Eg:
     // [ 40, 40, 44.5, 43.5, 57, 35, 65.5, 62, 14, 46.5 ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = weather.reduce((acc, location) => {
+      acc.push((location.temperature.high + location.temperature.low) / 2);
+
+      return acc;
+    },[]);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We can use .reduce() to return an array of the average
+    // temps by adding and then dividing them by 2.
   },
 
   findSunnySpots() {
@@ -369,7 +498,15 @@ const weatherPrompts = {
     // 'New Orleans, Louisiana is sunny.',
     // 'Raleigh, North Carolina is mostly sunny.' ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = weather.reduce((acc, location) => {
+      const sunny = location.type === 'sunny';
+      const mostlySunny = location.type === 'mostly sunny';
+      if (sunny || mostlySunny) {
+        acc.push(`${location.location} is ${location.type}.`);
+      }
+
+      return acc;
+    }, []);
     return result;
 
     // Annotation:
@@ -452,7 +589,7 @@ const nationalParksPrompts = {
     //   'backpacking',
     //   'rock climbing' ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'place code here';
     return result;
 
     // Annotation:

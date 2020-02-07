@@ -12,15 +12,20 @@ const scope = {
 
       function beautifyPerson() {
         // Log A: personB
-        
+        // Logs 'Ben'
+
         if (personB.includes('B')) {
           personB = person;
+          // changes personB to 'CardiB'
           personC = personB;
+          // changes personC to 'CardiB'
+
           // Log B: personC
         }
       }
 
       personC = personA;
+      // changes personC to 'Paul'
 
       // Log C: personB
     }
@@ -29,11 +34,24 @@ const scope = {
 
     // Log D: personC
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [
+      { A: 'Ben' },
+      { B: 'CardiB' },
+      { C: 'CardiB' },
+      { D: 'Paul' }
+    ];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // When the function fires, personA is 'Paul', so the if statement runs.
+    // `person` is never declared so it gets hoisted and defined in the 'global'
+    // scope as 'CardiB'. Then beautifyPerson() is fired.
+    // So we log A: personB which is 'Ben'. PersonB does include 'B', so we
+    // go into that if block. personB is reassigned to 'CardiB'. Then personC
+    // is reassigned to personB which is now 'cardiB'. Then we log B: as
+    // 'CardiB'. Now were back outsite of the beautifyPerson() and personC
+    // is changed to personA which is 'Paul'. Then we log C: personB which is
+    // 'CardiB'. After all of that we log D: personC which is now 'Paul'.
   },
 
   exerciseB() {
@@ -47,27 +65,43 @@ const scope = {
       }
 
       // Log A: number
+      // number = 75
 
       function newNumber() {
         number = 64;
 
         // Log B: number
+        // logs 64
       }
 
       newNumber();
 
       // Log C: number
+      // logs 64
     }
 
     numberFunction();
 
     // Log D: number
+    // logs 30
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [
+      { A: 75 },
+      { B: 64 },
+      { C: 64 },
+      { D: 30 }
+    ];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // number starts off at 30. numberFunction() is fired. A new `let number`
+    // is created within the function. Then an if block that actually does
+    // nothing since we don't log a number inside of it.
+    // then we Log A: number, which looks to the top of the function to get 75.
+    // Then \the newNumber() is invoked. We reassign number inside the
+    // numberFunction scope to 64. So we log B; 64. Backing out of the
+    // newNumber() scope, we log C : 64, (the re-assigned value). Then back to
+    // global scope we log D: 30.
   },
 
   exerciseC() {
@@ -315,7 +349,7 @@ const scope = {
       // Log B: toppings
       var toppings = 'chipotle sauce';
 
-      if (toppings === 'chipotle sauce') { 
+      if (toppings === 'chipotle sauce') {
         sandwich = 'not a mediocre sandwich';
       }
 
@@ -518,7 +552,7 @@ const scope = {
       // Log A: kid
       wildKids.push(kid);
       // Log B: wildKids
-  
+
       let drawOnTheWall = () => {
         let myKid = 'Mandy';
         // Log C: myKid
@@ -556,7 +590,7 @@ const scope = {
       // Log B: myName
 
       let innerFunc = () => {
-        let myName = 'Tesla'; 
+        let myName = 'Tesla';
         // Log C: myName
       };
 

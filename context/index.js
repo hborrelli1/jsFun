@@ -16,11 +16,13 @@ const context = {
 
 
     // What is the value of `this` when we call ship.fly()?
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'global window object';
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // 'this' refers to the global window object because even though the fly
+    // function is called on the ship object, the function itself is defined
+    // in the global scope while also being an arrow function.
   },
 
   exerciseB() {
@@ -30,7 +32,7 @@ const context = {
     }
 
     // What is the value of `this` when we call fn()?
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'object';
     return result;
 
     // Annotation:
