@@ -870,15 +870,40 @@ const bossPrompts = {
     //   { bossName: 'Ursula', sidekickLoyalty: 20 },
     //   { bossName: 'Scar', sidekickLoyalty: 16 }
     // ]
-    let bossNames = Object.keys(bosses);
-    console.log(bossNames);
-    const result = bosses.reduce((bossLoyalty, boss) => {
 
-    });
+    // LOop through each boss by key.
+    // Create bossName and boss name as key value.
+    // Loop through each bosses sidekicks.
+    // Find loyalty of sidekick in sidekicks array.
+    // Add all of bosses sidekicks loyalties value.
+    // Place loyalty values as sideKickloyalty in og object.
+
+    let bossNames = Object.keys(bosses);
+
+    const result = bossNames.reduce((bossLoyalty, boss) => {
+      boss = boss.charAt(0).toUpperCase() + boss.slice(1);
+
+      let bossAttributes = {bossName: '', sidekickLoyalty: 0};
+      bossAttributes.bossName = boss;
+
+      bossAttributes.sidekickLoyalty = sidekicks.reduce((loyalty, sidekick) => {
+        (sidekick.boss === boss) && (loyalty += sidekick.loyaltyToBoss);
+        return loyalty;
+      },0);
+      bossLoyalty.push(bossAttributes);
+
+      return bossLoyalty;
+    },[]);
+
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Grab the keys of each Boss. Run .reduce() fn on boss names. Set an object
+    // to hold values of bossname and sidekick loyalty. The value of sidekickLoyalty
+    // Is another reduce function that loops through all sidekicks. If the
+    // sidekick boss name is equal to the boss at hand, add the loyaltyToBoss
+    // attributes. That value gets assigned to the sideKickloyalty property.
+    // Then we push the new objects into our original reduce array.
   }
 };
 
@@ -916,7 +941,18 @@ const astronomyPrompts = {
     //     color: 'red' }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    // Save constellatin keys.
+    // for each constellation, run a loop.
+    // and foreach star, run a test. If stars array contains a star with the name
+    // equal to the star at hand, push star object into allStars array.
+
+    let constellationKeys = Object.keys(constellations);
+
+    const result = constellationKeys.reduce((allStars, star) => {
+      foundStars.push()
+      return foundStars;
+    }, []);
+
     return result;
 
     // Annotation:
