@@ -942,21 +942,29 @@ const astronomyPrompts = {
     // ]
 
     // Save constellatin keys.
-    // for each constellation, run a loop.
-    // and foreach star, run a test. If stars array contains a star with the name
-    // equal to the star at hand, push star object into allStars array.
+    // Loop through constellations (reduce). If star is found in stars array. Push to reduce return.
 
     let constellationKeys = Object.keys(constellations);
+    let allStars = constellationKeys.reduce((starsArr, constellation) => {
+      starsArr = starsArr.concat(constellations[constellation].stars);
+      return starsArr;
+    },[]);
 
-    const result = constellationKeys.reduce((allStars, star) => {
-      foundStars.push()
-      return foundStars;
-    }, []);
-
-    return result;
+    // Loop through stars. If star is included in allStars array.
+    // add star to returned array.
+    return stars.reduce((all, star) => {
+      if (allStars.includes(star.name)) {
+        all.push(star);
+      }
+      return all;
+    },[]);
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We can use Object.keys to find all of the stars within
+    // the constellations. Once we have all, we can use reduce
+    // to loop through each star and if the name of the star
+    // is included in the array, we can push that into our
+    // return statement.
   },
 
   starsByColor() {
@@ -970,11 +978,23 @@ const astronomyPrompts = {
     //   red: [{obj}]
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    // Loop through all stars. Create a key if star color does
+    // not already exist and push star to array. If star color
+    // does exist as a key, just push star to array.
+
+    const result = stars.reduce((starColors, star) => {
+      (!starColors[star.color]) && (starColors[star.color] = []);
+      starColors[star.color].push(star);
+
+      return starColors;
+    },{});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We can loop through the stars array with reduce. If the
+    // returned value does not include the key of the star color,
+    // Then we can create it with an empty array. Then we can
+    // push each star to the correct array.
   },
 
   constellationsStarsExistIn() {
@@ -991,12 +1011,16 @@ const astronomyPrompts = {
     //    "Orion",
     //    "The Little Dipper" ]
 
+    const result = stars.sort((a, b) => a.visualMagnitude - b.visualMagnitude).map(star => star.constellation);
+    result.splice(result.indexOf(''), 1 );
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We can fist sort the stars by order of visualMagnitude.
+    // Then we can map over the new array to return just the
+    // name property. Then we can remove the star that does not
+    // contain a value for the constellation property.
   }
 };
 
@@ -1023,11 +1047,18 @@ const ultimaPrompts = {
     // Return the sum of the amount of damage for all the weapons that our characters can use
     // Answer => 113
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = characters.reduce((sum, char) => {
+      char.weapons.forEach(weapon => {
+        sum += weapons[weapon].damage;
+      });
+
+      return sum;
+    },0);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Loop through each character. Foreach weapon add the sum
+    // to our reduce inital value.
   },
 
   charactersByTotal() {
@@ -1035,11 +1066,26 @@ const ultimaPrompts = {
     // Return the sum damage and total range for each character as an object.
     // ex: [ { Avatar: { damage: 27, range: 24 }, { Iolo: {...}, ...}
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = characters.reduce((allChars, char) => {
+      let character = { [char.name]: {
+        damage: 0,
+        range: 0
+      }};
+
+      char.weapons.forEach(weapon => {
+        character[char.name].damage += weapons[weapon].damage;
+        character[char.name].range += weapons[weapon].range;
+      });
+      allChars.push(character);
+
+      return allChars;
+    },[]);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Loop through each character with reduce(). Within each
+    // character, foreach weapon, total range and data and add to
+    // initial value for return.
   },
 };
 
@@ -1072,11 +1118,23 @@ const dinosaurPrompts = {
     //   'Jurassic World: Fallen Kingdom': 18
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = movies.reduce((allMovies, movie) => {
+      allMovies[movie.title] = 0;
+      movie.dinos.forEach(dino => {
+        if (dinosaurs[dino].isAwesome) {
+          allMovies[movie.title] += 1;
+        }
+      });
+
+      return allMovies;
+    },{});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We can loop through the movies array. For each movie
+    // we can add our movie title as a key in the inital value
+    // Then for each dinosaur in each movie, if that dinosaur
+    // is awesome, increase the dino count by 1.
   },
 
   averageAgePerMovie() {
@@ -1105,7 +1163,25 @@ const dinosaurPrompts = {
       }
     */
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    // Loop through each movie. If director does not exist
+    // as a key, create a key. IF the movie has not been added as
+    // a key to the directors object, add it. Then calculate the
+    // average age of the movie cast as the value.
+
+    const result = movies.reduce((averageAge, movie) => {
+      let totalCastAge = 0;
+      const getCastAvgAge = (movie) => {
+        movie.cast.forEach(star => totalCastAge += (Number(movie.yearRelease) - Number(star.yearBorn)));
+      };
+      console.log(getCastAvgAge);
+
+      if (!averageAge[movie.director]) {
+        averageAge[movie.director] = {};
+      }
+      averageAge[movie.director][movie.title] = getCastAvgAge(movie);
+
+      return averageAge;
+    },{});
     return result;
 
     // Annotation:

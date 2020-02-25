@@ -1,4 +1,4 @@
-const dinosaurs = { 
+const dinosaurs = {
   Brachiosaurus: { carnivore: false, herbivore: true, isAwesome: true },
   Dilophosaurus: { carnivore: true, herbivore: false, isAwesome: true },
   Gallimimus: { carnivore: true, herbivore: true, isAwesome: false },
@@ -24,7 +24,7 @@ const dinosaurs = {
   Carnotaurus: { carnivore: true, herbivore: false, isAwesome: true },
   Indoraptor: { carnivore: true, herbivore: false, isAwesome: true },
   Sinoceratops: { carnivore: true, herbivore: true, isAwesome: true },
-  Stygimoloch: { carnivore: false, herbivore: true, isAwesome: true } 
+  Stygimoloch: { carnivore: false, herbivore: true, isAwesome: true }
 };
 
 const humans = {
@@ -93,7 +93,7 @@ const humans = {
     nationality:'American',
     imdbStarMeterRating:80
   }
-}; 
+};
 
 const movies = [
   {
